@@ -46,6 +46,7 @@ window.onload = async () => {
     const form = document.querySelector('form');
     const btnAgregar = document.querySelector('#btn-agregar');
     const btnEnviar = document.querySelector('#btn-enviar');
+    const btnEliminar = document.querySelector('#btn-eliminar');
 
     btnAgregar.addEventListener('click', () => {
         for (let i = 0; i < form.elements.length; i++) {
@@ -53,7 +54,35 @@ window.onload = async () => {
         }//Reseteamos el formulario
 
         btnEnviar.textContent = 'Guardar';
+        btnEliminar.style.display = 'none';
+        btnAgregar.textContent = 'Cancelar';
+        btnAgregar.onclick = location.href = 'http://127.0.0.1:5500/frontend/home.html';
         query.set('edit', false)
+    })
+
+    btnEliminar.addEventListener('click', async (e) => {
+        e.preventDefault()
+        try {
+            const response = await fetch(`${URL_BASE}movies/delete/${id}`, {
+                method : 'DELETE',
+            })
+            await response.json()
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Película eliminada con éxito...",
+                timer: 2500,
+                showConfirmButton: false,
+              })
+
+              setTimeout(() => {
+                location.href = 'http://127.0.0.1:5500/frontend/home.html';
+              }, 2500);
+
+        } catch (error) {
+            console.log(error);
+        }
     })
 
     form.addEventListener('submit', async function (e) {

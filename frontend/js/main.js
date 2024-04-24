@@ -1,9 +1,8 @@
-sessionStorage.setItem('favorites22', JSON.stringify([]))
-
 const favoriteChange = (e, id) => {
   e.target.classList.toggle('fa-solid');
+  e.target.classList.toggle('fa-regular');
 
-  const favorites = JSON.parse(sessionStorage.getItem('favorites22'));
+  const favorites = sessionStorage.getItem('favorites22') ? JSON.parse(sessionStorage.getItem('favorites22')) : sessionStorage.setItem('favorites22', JSON.stringify([]));
 
   if (favorites.includes(id)) {
     const favoritesUpdated = favorites.filter(f => f != id);
@@ -13,7 +12,6 @@ const favoriteChange = (e, id) => {
     sessionStorage.setItem('favorites22', JSON.stringify(favorites));
   }
 };
-
 
 window.onload = async () => {
   const app = document.getElementById("root"); //captura elemente con id root
@@ -61,7 +59,7 @@ window.onload = async () => {
       favoriteLink.setAttribute('href', '#');
       favoriteLink.setAttribute('class', 'favorite');
       favoriteLink.setAttribute('onClick', `favoriteChange(event, ${movie.id})`)
-      favoriteLink.innerHTML = '<i class="fa-regular fa-heart fa-lg"></i>';
+      favoriteLink.innerHTML = `<i class="${favorites.includes(movie.id) ? 'fa-solid' : 'fa-regular'} fa-heart fa-lg"></i>`;
 
       card.appendChild(favoriteLink);
     });

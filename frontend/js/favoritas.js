@@ -1,4 +1,6 @@
-window.onload = () => {
+const favorites = JSON.parse(sessionStorage.getItem('favorites22'));
+
+window.onload = async () => {
   const app = document.getElementById("root");
   const container = document.createElement("div");
   container.setAttribute("class", "container");
@@ -6,13 +8,14 @@ window.onload = () => {
 
   // Aqui debemos agregar nuestro fetch
 
+    try {
+      const response = await fetch('http://localhost:3031/api/movies');
+      const result = await response.json();
+      const { meta, data } = result;
 
-
-  /** Codigo que debemos usar para mostrar los datos en el frontend
-    let data = peliculas.data;
-
-    data.forEach((movie) => {
-      const card = document.createElement("div");
+      data.forEach((movie) => {
+        if (favorites.includes(movie.id)) {
+          const card = document.createElement("div");
       card.setAttribute("class", "card");
 
       const h1 = document.createElement("h1");
@@ -33,6 +36,12 @@ window.onload = () => {
         card.appendChild(genero);
       }
       card.appendChild(duracion);
+        }
+      
     });
-  */
+    } catch (error) {
+      console.log(error);
+    }
+
+   
 };
